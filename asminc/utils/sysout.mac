@@ -1,0 +1,21 @@
+.if .not .DEFINEDMACRO(sysout)
+; invalidates a,x
+.macro sysout str, len
+.ifblank len
+    lda str
+    jsr CHROUT
+.else
+    .Local @loop
+    .Local @done
+    ldx #0
+@loop:
+    cpx #len
+    beq @done
+    lda str, x
+    jsr CHROUT
+    inx
+    bra @loop
+@done:
+.endif
+.endmacro
+.endif

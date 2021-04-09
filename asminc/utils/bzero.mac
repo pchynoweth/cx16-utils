@@ -1,0 +1,11 @@
+.if .not .DEFINEDMACRO(bzero)
+.macro bzero dst, len
+    .Local @loop
+    ldx #0
+@loop:
+    stz dst, x
+    inx
+    cpx #len
+    bcc @loop
+.endmacro
+.endif

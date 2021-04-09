@@ -1,0 +1,15 @@
+.if .not .DEFINEDMACRO(puts)
+; invalidates a,x
+.macro puts str
+    .Local @loop
+    .Local @done
+    ldy #0
+@loop:
+    lda str, y
+    beq @done
+    jsr CHROUT
+    iny
+    bra @loop
+@done:
+.endmacro
+.endif

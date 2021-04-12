@@ -11,24 +11,6 @@
 
 .code
 
-.macro check_char c, sub, next
-   .Local @skip
-   cmp c
-   bne @skip
-   jsr sub
-   bra next
-@skip:
-.endmacro
-
-.macro memcpy dst, src
-   pha
-   lda src
-   sta dst
-   lda src+1
-   sta dst+1
-   pla
-.endmacro
-
 ; PETSCII Codes
 CLR               = $93
 
@@ -50,13 +32,8 @@ start:
    jsr CHROUT
    lda #CH::WHITE
    jsr CHROUT
-   jsr test_div
    jsr test_reverse
    rts
-
-.proc test_div
-   rts
-.endproc
 
 .proc test_reverse
    jsr init_test_suite

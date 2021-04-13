@@ -1,15 +1,14 @@
 .export putint16
 
-.include "cx16.inc"
+.include "utils/reg.inc"
 .include "cbm_kernal.inc"
-
-.data
-bcd: .res 5
 
 .code
 
 .proc putint16
-r0 = gREG::r0;
+r0 = REG::r0;
+bcd = REG::t0
+
    ; intialize BCD number to zero
    stz bcd
    stz bcd+1

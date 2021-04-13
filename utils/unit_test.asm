@@ -6,8 +6,9 @@
 .include "cx16.inc"
 .include "cbm_kernal.inc"
 
-.export init_test_suite, finish_test_suite, scenario, check_a, check_x, check_y, check_memory
-.import bzero, putint16, puts, sysout
+.export init_test_suite, finish_test_suite, scenario
+.export check_reg, check_reg16, check_memory
+.import bzero, putint16, puts, sysout, puthex16
 
 .rodata
 
@@ -162,23 +163,47 @@ state: .tag testState
     rts
 @failed:
     jsr failed
+    rts
 .endmacro
 
-; r0 - expected
-.proc check_a
-    __CHECK_REG REG::r0, cmp
+; r0L - val
+; r1L - expected
+.proc check_reg
+    lda REG::r0
+    cmp REG::r1
+    bne @failed
+    jsr passed
+    rts
+@failed:
+    jsr failed
     rts
 .endproc
 
-; r0 - expected
-.proc check_x
-    __CHECK_REG REG::r0, cpx
+; r0 - val
+; r1 - expected
+.proc check_reg16
+    lda REG::r0
+    cmp REG::r1
+    bne @failed
+    lda REG::r0+1
+    cmp REG::r1+1
+    bne @failed
+    jsr passed
     rts
-.endproc
-
-; r0 - expected
-.proc check_y
-    __CHECK_REG REG::r0, cpy
+@failed:
+    pushaddr REG::r0
+    pushaddr REG::r1
+    jsr failed
+    calli puts, expected_msg
+    pulladdr REG::r0
+    jsr puthex16
+    calli puts, got_msg
+    pulladdr REG::r0
+    jsr puthex16
+    lda #$27
+    jsr CHROUT
+    lda #CH::ENTER
+    jsr CHROUT
     rts
 .endproc
 

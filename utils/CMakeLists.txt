@@ -9,4 +9,7 @@ foreach(FILE ${SRCS})
 endforeach()
 
 target_link_libraries(unit_test
-    INTERFACE bzero sysout puts putint16)
+    INTERFACE bzero sysout puts putint16 puthex16)
+
+target_link_libraries(puthex16
+    INTERFACE puthex)

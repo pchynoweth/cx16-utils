@@ -7,8 +7,8 @@
 .code
    jmp start
 
-.import scenario, check_memory, init_test_suite, finish_test_suite
-.import check_a
+.import scenario, init_test_suite, finish_test_suite
+.import check_reg16, check_memory
 .import div
 
 .code
@@ -44,18 +44,11 @@ start:
    jsr div
 
    ; check result
-   pushaddr REG::r0
-   lda REG::r0L
-   ldx result
-   stx REG::r0
-   jsr check_a
-   pulladdr REG::r0
-
-   ; check mod
-   lda REG::r0H
-   ldx mod
-   stx REG::r0
-   jsr check_a
+   lda result
+   sta REG::r1
+   lda mod
+   sta REG::r1+1
+   jsr check_reg16
 .endmacro
 
 .proc test_div

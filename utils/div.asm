@@ -22,7 +22,7 @@ DIVISOR  = REG::r1L;
    lda MOD
    sec
    sbc DIVISOR
-   bcc @ignore
+   bcc @ignore ; carry clear indicates that MOD is less than DIVISOR
    sta MOD
 @ignore:
    dex

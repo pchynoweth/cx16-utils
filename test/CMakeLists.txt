@@ -18,10 +18,14 @@ function(make_test NAME)
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 endfunction()
 
-make_test(test_div
-    SOURCES test_div.asm
-    LIBS div)
+file(GLOB TEST_FILES test_*.asm)
 
-make_test(test_reverse
-    SOURCES test_reverse.asm
-    LIBS reverse)
+foreach(TEST_FILE ${TEST_FILES})
+    get_filename_component(FILE ${TEST_FILE} NAME)
+    get_filename_component(BASENAME ${TEST_FILE} NAME_WE)
+    string(REGEX REPLACE "^test_" "" LIB ${BASENAME})
+
+    make_test(${BASENAME}
+        SOURCES ${FILE}
+        LIBS ${LIB})
+endforeach()
